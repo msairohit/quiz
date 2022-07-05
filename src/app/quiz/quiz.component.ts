@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { CountdownComponent } from 'ngx-countdown';
 import { Quiz } from '../quiz.model';
 import { QuizService } from '../quiz.service';
 
@@ -18,6 +19,13 @@ export class QuizComponent implements OnInit {
   currenctQuestion = 0;
   displayResults: boolean = false;
 
+  // https://www.npmjs.com/package/ngx-countdown
+  @ViewChild('cd', { static: false }) private countdown: CountdownComponent;
+  config = {
+    leftTime : 10,
+    demand: true,
+    format: 'ss'
+  };
 
   order = [];
   constructor(private quizService: QuizService) { }
@@ -47,6 +55,7 @@ export class QuizComponent implements OnInit {
     setTimeout(() => {
       this.currenctQuestion++;
       this.answerSelected = false;
+      this.countdown.restart();
     }, 1000);
 
     if (option) {
@@ -77,6 +86,29 @@ export class QuizComponent implements OnInit {
     }
 
     return array;
+  }
+
+  startGame() {
+    this.config.leftTime= 10;
+    this.countdown.begin();
+  }
+  handleEvent(data) {
+    console.log(data);
+    if(this.currenctQuestion >= this.quizzes.length) {
+      //hide timer.
+      this.countdown.stop();
+      
+    }
+    if(data.action == 'done') {
+      console.log("change to next question.");
+      this.currenctQuestion++;
+      this.incorrectAnswers++;
+      // this.config.leftTime= 10;
+      this.countdown.restart();
+    }
+    if(data.action == 'restart') {
+      this.countdown.begin();
+    }
   }
 
 }

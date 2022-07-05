@@ -4,15 +4,19 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { QuizComponent } from './quiz/quiz.component';
 import { BackgroundDirective } from './background.directive';
+import { CountdownClockComponent } from './timer/countdown-clock/countdown-clock.component';
+import { CountdownModule } from 'ngx-countdown';
 
 @NgModule({
   declarations: [
     AppComponent,
     QuizComponent,
-    BackgroundDirective
+    BackgroundDirective,
+    CountdownClockComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    CountdownModule
   ],
   providers: [],
   bootstrap: [AppComponent]
